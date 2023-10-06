@@ -1,6 +1,33 @@
 <?php
 require "settings/init.php";
+if (!empty($_POST["data"])){
+    $data=$_POST["data"];
+    $file=$_FILES;
+
+    if(!empty($file[prodBillede]["tnp_name"])){
+        move_uploaded_file($file[prodBillede]["tnp_name"], "uploads/" . basename($file[prodBillede]["name"]));
+
+    }
+
+    
+
+     $bind=[
+            "prodNavn" => $data ["prodNavn"],
+            "prodBeskrivelse" =>$data[prodBeskrivelse],
+            "prodPris" => $data [prodPris],
+            "prodBillese" => (!empty($file[prodBillede]["tnp_name"])) ? $file[prodBillede]["name"]:NULL,
+
+
+    ];
+    $db->sql($sql, $bind, false);
+    header('location: insert.php');
+    exit();
+
+}
 ?>
+
+
+
 <!DOCTYPE html>
 <html lang="da">
 <head>
@@ -23,7 +50,7 @@ require "settings/init.php";
 <body
 
 <div class="container">
-    <form action="webshop.php" method="POST">
+    <form action="webshop.php" method="POST" enctype="multipart/form-data">
 
         <label for="Navn">Navn:</label>
         <input type="text" name="Navn" required><br>
@@ -39,6 +66,11 @@ require "settings/init.php";
 
         <label for="pris">Pris:</label>
         <input type="number" name="pris" step="0.01"><br>
+
+        <div class="col-12">
+            <label class="form-label" for="prodBillede">Produkt billede: </label>
+            <input type="file" class="form-control" id="prodBillede" name="prodBillede">
+        </div>
 
         <label for="Sidetal">Sidetal:</label>
         <input type="number" name="Sidetal"><br>

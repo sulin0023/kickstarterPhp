@@ -8,6 +8,7 @@ if(CONFIG_LIVE == 0){
     $DB_NAME = "webshop";
     $DB_USER = "root";
     $DB_PASS = "root";
+
 }else{
     $DB_SERVER = "";
     $DB_NAME = "";
